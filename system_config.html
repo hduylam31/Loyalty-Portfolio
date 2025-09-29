@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu hình hệ thống - Vietravel Loyalty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1405px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header-actions {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .last-updated {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .tab.active {
+            color: #3498db;
+            background: white;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3498db;
+        }
+
+        .tab-icon {
+            font-size: 18px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Configuration Card */
+        .config-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .config-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .config-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .config-description {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Form Elements */
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .form-label .required {
+            color: #e74c3c;
+        }
+
+        .form-input, .form-select {
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-input[readonly] {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-addon {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            color: #1565c0;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box-content {
+            font-size: 13px;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        /* Tier Table */
+        .tier-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tier-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            font-size: 13px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .tier-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f3f4;
+            font-size: 14px;
+        }
+
+        .tier-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .tier-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Tier Badge */
+        .tier-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .tier-member { background: #f8f9fa; color: #6c757d; }
+        .tier-silver { background: #e9ecef; color: #495057; }
+        .tier-gold { background: #fff3cd; color: #856404; }
+        .tier-platinum { background: #cce5ff; color: #004085; }
+        .tier-diamond { background: #d4edda; color: #155724; }
+
+        /* Status Pill */
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-inactive { background: #f8d7da; color: #721c24; }
+
+        /* Action Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Action Icons */
+        .action-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #dee2e6;
+            background: white;
+            font-size: 14px;
+        }
+
+        .action-icon:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .action-icon.edit { color: #f39c12; }
+        .action-icon.delete { color: #e74c3c; }
+
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            justify-content: flex-end;
+        }
+
+        /* Formula Display */
+        .formula-display {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        .formula-display .value {
+            color: #3498db;
+            font-size: 24px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Switch Toggle */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-actions">
+            <div>
+                <h1 class="page-title">⚙️ Cấu hình hệ thống</h1>
+                <div class="last-updated">Cập nhật lần cuối: 15/03/2024 09:30 bởi Admin</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('points-gold', this)">
+                    <span class="tab-icon">🏆</span>
+                    Cấu hình quy đổi điểm vàng
+                </button>
+                <button class="tab" onclick="switchTab('points-reward', this)">
+                    <span class="tab-icon">🎁</span>
+                    Cấu hình quy đổi điểm thưởng
+                </button>
+                <button class="tab" onclick="switchTab('tiers', this)">
+                    <span class="tab-icon">👑</span>
+                    Cấu hình hạng thành viên
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 1: Gold Points Configuration -->
+        <div class="tab-content active" id="points-gold">
+            <div class="config-card">
+                <div class="config-header">
+                    <h2 class="config-title">Cấu hình quy đổi điểm vàng</h2>
+                    <p class="config-description">
+                        Điểm vàng là điểm được sử dụng để xét hạng thành viên. Khi hội viên chi tiêu cho các dịch vụ của Vietravel, 
+                        họ sẽ được tích lũy điểm vàng theo tỷ lệ quy đổi được cấu hình dưới đây.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        ℹ️ Lưu ý quan trọng
+                    </div>
+                    <div class="info-box-content">
+                        • Điểm vàng chỉ được dùng để xét hạng, không thể quy đổi thành phần thưởng<br>
+                        • Thay đổi tỷ lệ quy đổi chỉ áp dụng cho các giao dịch mới
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">📊 Thông số hiện tại</h3>
+                    <div class="formula-display">
+                        <span class="value" id="currentGoldRate">100,000</span> VNĐ = <span class="value">1</span> Điểm vàng
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">⚙️ Cấu hình tỷ lệ quy đổi</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Số tiền VNĐ <span class="required">*</span></label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="goldVndAmount" value="100000" min="1000" step="1000">
+                                <span class="input-addon">VNĐ</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Quy đổi thành</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" value="1" readonly>
+                                <span class="input-addon">Điểm vàng</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Thời gian cuốn chiếu (Chu kỳ xét hạng)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" value="12" readonly>
+                                <span class="input-addon">tháng</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cách làm tròn</label>
+                            <select class="form-select">
+                                <option>Làm tròn xuống (mặc định)</option>
+                                <option>Làm tròn lên</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="resetGoldConfig()">Hủy thay đổi</button>
+                    <button class="btn btn-primary" onclick="saveGoldConfig()">Lưu cấu hình</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Reward Points Configuration -->
+        <div class="tab-content" id="points-reward">
+            <div class="config-card">
+                <div class="config-header">
+                    <h2 class="config-title">Cấu hình quy đổi điểm thưởng</h2>
+                    <p class="config-description">
+                        Điểm thưởng là điểm hội viên có thể sử dụng để đổi quà, voucher và các phần thưởng khác. 
+                        Điểm thưởng được tích lũy song song với điểm vàng và có thể có các chương trình khuyến mãi riêng.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        ℹ️ Lưu ý quan trọng
+                    </div>
+                    <div class="info-box-content">
+                        • Điểm thưởng có thể được chuyển nhượng giữa các thành viên trong Family Plan<br>
+                        • Có thể áp dụng hệ số nhân điểm thưởng theo hạng thành viên
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">📊 Thông số hiện tại</h3>
+                    <div class="formula-display">
+                        <span class="value" id="currentRewardRate">100,000</span> VNĐ = <span class="value">1</span> Điểm thưởng
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">⚙️ Cấu hình tỷ lệ quy đổi</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Số tiền VNĐ <span class="required">*</span></label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="rewardVndAmount" value="100000" min="1000" step="1000">
+                                <span class="input-addon">VNĐ</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Quy đổi thành</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" value="1" readonly>
+                                <span class="input-addon">Điểm thưởng</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Thời gian cuốn chiếu</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" value="36" readonly>
+                                <span class="input-addon">tháng</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Giá trị quy đổi 1 điểm</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" value="1000" readonly>
+                                <span class="input-addon">VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">🎯 Hệ số nhân điểm theo hạng</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="switch-label">
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span>Kích hoạt hệ số nhân điểm theo hạng thành viên</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="resetRewardConfig()">Hủy thay đổi</button>
+                    <button class="btn btn-primary" onclick="saveRewardConfig()">Lưu cấu hình</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Tier Configuration -->
+        <div class="tab-content" id="tiers">
+            <div class="config-card">
+                <div class="config-header">
+                    <h2 class="config-title">Cấu hình hạng thành viên</h2>
+                    <p class="config-description">
+                        Quản lý các hạng thành viên trong hệ thống. Mỗi hạng có điều kiện đạt hạng riêng và các ưu đãi khác nhau.
+                        Hệ thống sẽ tự động xét hạng cho hội viên dựa trên điểm vàng tích lũy trong chu kỳ.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        ℹ️ Thông tin hệ thống xét hạng
+                    </div>
+                    <div class="info-box-content">
+                        • Chu kỳ xét hạng: 12 tháng cuốn chiếu tương ứng với chu kỳ xét hạng điểm vàng<br>
+                        • Tự động nâng hạng khi đủ điều kiện<br>
+                        • Xét giảm hạng vào cuối mỗi tháng<br>
+                        • Hội viên được giữ nguyên ưu đãi trong chu kỳ hiện tại
+                    </div>
+                </div>
+
+                <!-- Add new tier button -->
+                <div style="margin-bottom: 20px; text-align: right;">
+                    <button class="btn btn-primary" onclick="openTierModal()">
+                        ➕ Thêm hạng mới
+                    </button>
+                </div>
+
+                <!-- Tier table -->
+                <div class="tier-table-container">
+                    <table class="tier-table">
+                        <thead>
+                            <tr>
+                                <th width="80">Cấp độ</th>
+                                <th width="150">Tên hạng</th>
+                                <th width="150">Điều kiện (Điểm vàng)</th>
+                                <th width="120">Hệ số điểm thưởng</th>
+                                <th width="200">Mô tả</th>
+                                <th width="100">Trạng thái</th>
+                                <th width="100">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tierTableBody">
+                            <tr>
+                                <td><strong>0</strong></td>
+                                <td><span class="tier-badge tier-member">Thành viên (Member)</span></td>
+                                <td>0 - 199 điểm</td>
+                                <td>0%</td>
+                                <td>Hạng mới gia nhập, tích lũy điểm để nâng hạng</td>
+                                <td><span class="status-pill status-active">Active</span></td>
+                                <td>
+                                    <div class="action-icons">
+                                        <div class="action-icon edit" onclick="editTier(0)">✏️</div>
+                                        <div class="action-icon delete" style="opacity: 0.5; cursor: not-allowed;" title="Không thể xóa hạng mặc định">🗑️</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td><span class="tier-badge tier-silver">Bạc (Silver)</span></td>
+                                <td>200 - 699 điểm</td>
+                                <td>+20%</td>
+                                <td>Hạng cơ bản cho thành viên tích cực</td>
+                                <td><span class="status-pill status-active">Active</span></td>
+                                <td>
+                                    <div class="action-icons">
+                                        <div class="action-icon edit" onclick="editTier(1)">✏️</div>
+                                        <div class="action-icon delete" onclick="deleteTier(1)">🗑️</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2</strong></td>
+                                <td><span class="tier-badge tier-gold">Vàng (Gold)</span></td>
+                                <td>700 - 1,499 điểm</td>
+                                <td>+50%</td>
+                                <td>Hạng dành cho khách hàng thân thiết</td>
+                                <td><span class="status-pill status-active">Active</span></td>
+                                <td>
+                                    <div class="action-icons">
+                                        <div class="action-icon edit" onclick="editTier(2)">✏️</div>
+                                        <div class="action-icon delete" onclick="deleteTier(2)">🗑️</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>3</strong></td>
+                                <td><span class="tier-badge tier-platinum">Bạch kim (Platinum)</span></td>
+                                <td>1,500+ điểm</td>
+                                <td>+100%</td>
+                                <td>Hạng cao cấp với nhiều ưu đãi độc quyền</td>
+                                <td><span class="status-pill status-active">Active</span></td>
+                                <td>
+                                    <div class="action-icons">
+                                        <div class="action-icon edit" onclick="editTier(3)">✏️</div>
+                                        <div class="action-icon delete" onclick="deleteTier(3)">🗑️</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="resetTierConfig()">Khôi phục mặc định</button>
+                    <button class="btn btn-success" onclick="saveTierConfig()">Lưu tất cả thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tier Modal -->
+    <div class="modal" id="tierModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="tierModalTitle">Thêm hạng mới</h2>
+                <button class="modal-close" onclick="closeTierModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tên hạng <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="tierName" placeholder="VD: Diamond, VIP...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cấp độ hạng <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="tierLevel" placeholder="Số thứ tự (1 = thấp nhất)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Điểm vàng tối thiểu <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="tierMinPoints" placeholder="VD: 2000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Điểm vàng tối đa</label>
+                            <input type="number" class="form-input" id="tierMaxPoints" placeholder="Để trống nếu không giới hạn">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Hệ số điểm thưởng (%) <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="tierBonus" placeholder="VD: 150 (nghĩa là +150%)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Màu hiển thị</label>
+                            <select class="form-select" id="tierColor">
+                                <option value="silver">Bạc</option>
+                                <option value="gold">Vàng</option>
+                                <option value="platinum">Bạch kim</option>
+                                <option value="diamond">Kim cương</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mô tả ngắn</label>
+                        <input type="text" class="form-input" id="tierDescription" placeholder="Mô tả về hạng thành viên này">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="closeTierModal()">Hủy</button>
+                    <button class="btn btn-primary" onclick="saveTier()">Lưu hạng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Switch tabs
+        function switchTab(tabName, element) {
+            // Remove active from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active to selected
+            element.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Gold Points Config
+        function saveGoldConfig() {
+            const vndAmount = document.getElementById('goldVndAmount').value;
+            if (!vndAmount || vndAmount <= 0) {
+                alert('Vui lòng nhập số tiền VNĐ hợp lệ!');
+                return;
+            }
+            
+            if (confirm(`Xác nhận thay đổi tỷ lệ quy đổi:\n${parseInt(vndAmount).toLocaleString()} VNĐ = 1 Điểm vàng?`)) {
+                document.getElementById('currentGoldRate').textContent = parseInt(vndAmount).toLocaleString();
+                alert('Cấu hình điểm vàng đã được lưu thành công!');
+            }
+        }
+
+        function resetGoldConfig() {
+            document.getElementById('goldVndAmount').value = 100000;
+        }
+
+        // Reward Points Config
+        function saveRewardConfig() {
+            const vndAmount = document.getElementById('rewardVndAmount').value;
+            if (!vndAmount || vndAmount <= 0) {
+                alert('Vui lòng nhập số tiền VNĐ hợp lệ!');
+                return;
+            }
+            
+            if (confirm(`Xác nhận thay đổi tỷ lệ quy đổi:\n${parseInt(vndAmount).toLocaleString()} VNĐ = 1 Điểm thưởng?`)) {
+                document.getElementById('currentRewardRate').textContent = parseInt(vndAmount).toLocaleString();
+                alert('Cấu hình điểm thưởng đã được lưu thành công!');
+            }
+        }
+
+        function resetRewardConfig() {
+            document.getElementById('rewardVndAmount').value = 100000;
+        }
+
+        // Tier Management
+        function openTierModal() {
+            document.getElementById('tierModalTitle').textContent = 'Thêm hạng mới';
+            clearTierForm();
+            document.getElementById('tierModal').classList.add('active');
+        }
+
+        function closeTierModal() {
+            document.getElementById('tierModal').classList.remove('active');
+        }
+
+        function clearTierForm() {
+            document.getElementById('tierName').value = '';
+            document.getElementById('tierLevel').value = '';
+            document.getElementById('tierMinPoints').value = '';
+            document.getElementById('tierMaxPoints').value = '';
+            document.getElementById('tierBonus').value = '';
+            document.getElementById('tierDescription').value = '';
+        }
+
+        function saveTier() {
+            const name = document.getElementById('tierName').value;
+            const level = document.getElementById('tierLevel').value;
+            const minPoints = document.getElementById('tierMinPoints').value;
+            const bonus = document.getElementById('tierBonus').value;
+            
+            if (!name || !level || !minPoints || !bonus) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            alert(`Hạng "${name}" đã được thêm thành công!`);
+            closeTierModal();
+            
+            // In real app, would update table here
+        }
+
+        function editTier(id) {
+            document.getElementById('tierModalTitle').textContent = 'Chỉnh sửa hạng';
+            
+            // Populate form with existing data
+            if (id === 0) {
+                document.getElementById('tierName').value = 'Thành viên (Member)';
+                document.getElementById('tierLevel').value = '0';
+                document.getElementById('tierMinPoints').value = '0';
+                document.getElementById('tierMaxPoints').value = '199';
+                document.getElementById('tierBonus').value = '0';
+                document.getElementById('tierDescription').value = 'Hạng mới gia nhập, tích lũy điểm để nâng hạng';
+            } else if (id === 1) {
+                document.getElementById('tierName').value = 'Bạc (Silver)';
+                document.getElementById('tierLevel').value = '1';
+                document.getElementById('tierMinPoints').value = '200';
+                document.getElementById('tierMaxPoints').value = '699';
+                document.getElementById('tierBonus').value = '20';
+                document.getElementById('tierDescription').value = 'Hạng cơ bản cho thành viên tích cực';
+            } else if (id === 2) {
+                document.getElementById('tierName').value = 'Vàng (Gold)';
+                document.getElementById('tierLevel').value = '2';
+                document.getElementById('tierMinPoints').value = '700';
+                document.getElementById('tierMaxPoints').value = '1499';
+                document.getElementById('tierBonus').value = '50';
+                document.getElementById('tierDescription').value = 'Hạng dành cho khách hàng thân thiết';
+            } else if (id === 3) {
+                document.getElementById('tierName').value = 'Bạch kim (Platinum)';
+                document.getElementById('tierLevel').value = '3';
+                document.getElementById('tierMinPoints').value = '1500';
+                document.getElementById('tierMaxPoints').value = '';
+                document.getElementById('tierBonus').value = '100';
+                document.getElementById('tierDescription').value = 'Hạng cao cấp với nhiều ưu đãi độc quyền';
+            }
+            
+            document.getElementById('tierModal').classList.add('active');
+        }
+
+        function deleteTier(id) {
+            if (id === 0) {
+                alert('Không thể xóa hạng mặc định của hệ thống!');
+                return;
+            }
+            if (confirm('Bạn có chắc muốn xóa hạng này? Việc xóa có thể ảnh hưởng đến hội viên hiện tại.')) {
+                alert('Hạng đã được xóa!');
+                // In real app, would update table here
+            }
+        }
+
+        function saveTierConfig() {
+            if (confirm('Lưu tất cả thay đổi cấu hình hạng thành viên?')) {
+                alert('Cấu hình hạng thành viên đã được lưu thành công!');
+            }
+        }
+
+        function resetTierConfig() {
+            if (confirm('Khôi phục cấu hình hạng về mặc định? Tất cả thay đổi sẽ bị mất.')) {
+                alert('Đã khôi phục cấu hình mặc định!');
+                location.reload();
+            }
+        }
+
+        // Format number inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+            numberInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.id === 'goldVndAmount' || this.id === 'rewardVndAmount') {
+                        // Update display in real-time
+                        const value = parseInt(this.value) || 0;
+                        const displayId = this.id === 'goldVndAmount' ? 'currentGoldRate' : 'currentRewardRate';
+                        // Don't update current rate until saved
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
