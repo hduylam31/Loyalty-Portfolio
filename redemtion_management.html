@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Lịch sử Đổi thưởng - Vietravel Loyalty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1405px;
+            margin: 0 auto;
+        }
+
+        /* Header Actions */
+        .header-actions {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .tab.active {
+            color: #3498db;
+            background: white;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3498db;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .icon-points { background: #fff3cd; color: #ffc107; }
+        .icon-gifts { background: #d4edda; color: #27ae60; }
+        .icon-stock { background: #d1ecf1; color: #17a2b8; }
+        .icon-rate { background: #f8d7da; color: #dc3545; }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .change-positive { color: #27ae60; }
+        .change-negative { color: #e74c3c; }
+
+        /* Charts Section */
+        .charts-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .charts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .charts-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .chart-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chart-filter-select {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-card {
+            min-height: 280px;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .chart-canvas {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bar Chart */
+        .bars-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 180px;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .bar {
+            width: 35px;
+            background: linear-gradient(180deg, #3498db, #2980b9);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            background: linear-gradient(180deg, #2980b9, #21618c);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: #2c3e50;
+            white-space: nowrap;
+        }
+
+        .bar-label {
+            font-size: 10px;
+            color: #6c757d;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        /* Pie Chart */
+        .pie-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 180px;
+        }
+
+        .pie-chart {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3498db 0deg 126deg,
+                #27ae60 126deg 270deg,
+                #ffc107 270deg 360deg
+            );
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        /* Line Chart */
+        .line-container {
+            position: relative;
+            height: 180px;
+            padding: 0 10px;
+        }
+
+        .line-chart-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-left: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .line-points {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .line-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #3498db;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 150px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .filter-select, .filter-input, .filter-date {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .filter-input {
+            min-width: 250px;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Main Table */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .redemption-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .redemption-table th {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .redemption-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+
+        .redemption-table tbody tr {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .redemption-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Clickable Gift Link */
+        .gift-link {
+            color: #3498db;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .gift-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Status Pills */
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-success { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-outofstock { background: #f8d7da; color: #721c24; }
+        .status-cancelled { background: #e2e3e5; color: #383d41; }
+
+        /* Member Badge */
+        .member-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-member { background: #e2e3e5; color: #383d41; }
+        .badge-silver { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); color: white; }
+        .badge-gold { background: linear-gradient(135deg, #ffd700, #ffb300); color: #333; }
+        .badge-platinum { background: linear-gradient(135deg, #e5e5e5, #b8b8b8); color: #333; }
+
+        /* Points Badge */
+        .points-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .pagination-btn {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .pagination-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 5px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        /* Custom Scrollbar */
+        .table-wrapper::-webkit-scrollbar,
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track,
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb,
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <h1 class="page-title">🖥️ Quản lý Lịch sử Đổi thưởng</h1>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="refreshData()">
+                    🔄 Làm mới dữ liệu
+                </button>
+                <button class="btn btn-success" onclick="syncERP()">
+                    🔄 Đồng bộ ERP
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('dashboard', this)">
+                    📊 Dashboard tổng quan
+                </button>
+                <button class="tab" onclick="switchTab('history', this)">
+                    📋 Lịch sử đổi điểm thưởng
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 1: Dashboard Content -->
+        <div id="dashboard-tab" class="tab-content active">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-points">💎</div>
+                    <div class="stat-label">Tổng số điểm đã quy đổi</div>
+                    <div class="stat-value" id="totalPoints">850,000</div>
+                    <div class="stat-change change-positive">↑ 12.5% so với tháng trước</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-gifts">🎁</div>
+                    <div class="stat-label">Tổng số quà đã phát ra</div>
+                    <div class="stat-value" id="totalGifts">3,200</div>
+                    <div class="stat-change change-positive">↑ 8.3% so với tháng trước</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-stock">📦</div>
+                    <div class="stat-label">Tồn kho quà hiện tại (ERP)</div>
+                    <div class="stat-value" id="currentStock">12,500</div>
+                    <div class="stat-change change-negative">↓ 5.2% cần bổ sung</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-rate">📈</div>
+                    <div class="stat-label">Tỷ lệ đổi điểm thành quà</div>
+                    <div class="stat-value" id="conversionRate">35%</div>
+                    <div class="stat-change change-positive">↑ 2.1% hiệu quả hơn</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="charts-header">
+                    <h3 class="charts-title">📊 Biểu đồ phân tích</h3>
+                    <div class="chart-filters">
+                        <select class="chart-filter-select" id="chartTimeFilter" onchange="updateCharts()">
+                            <option value="7">7 ngày</option>
+                            <option value="30" selected>30 ngày</option>
+                            <option value="180">6 tháng</option>
+                            <option value="custom">Tùy chọn</option>
+                        </select>
+                        <select class="chart-filter-select" id="chartTypeFilter" onchange="updateCharts()">
+                            <option value="">Tất cả loại quà</option>
+                            <option value="voucher">Voucher</option>
+                            <option value="physical">Vật lý</option>
+                            <option value="privilege">Đặc quyền</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <!-- Bar Chart: Top 5 Gifts -->
+                    <div class="chart-card">
+                        <h4 class="chart-title">📊 Top 5 quà được đổi nhiều nhất</h4>
+                        <div class="chart-canvas">
+                            <div class="bars-container">
+                                <div class="bar-group">
+                                    <div class="bar" style="height: 160px;">
+                                        <span class="bar-value">1,234</span>
+                                    </div>
+                                    <span class="bar-label">Voucher 200K</span>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar" style="height: 140px;">
+                                        <span class="bar-value">987</span>
+                                    </div>
+                                    <span class="bar-label">Bình giữ nhiệt</span>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar" style="height: 110px;">
+                                        <span class="bar-value">756</span>
+                                    </div>
+                                    <span class="bar-label">Voucher 100K</span>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar" style="height: 85px;">
+                                        <span class="bar-value">543</span>
+                                    </div>
+                                    <span class="bar-label">CGV 100K</span>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar" style="height: 60px;">
+                                        <span class="bar-value">321</span>
+                                    </div>
+                                    <span class="bar-label">Grab 50K</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pie Chart: Gift Distribution -->
+                    <div class="chart-card">
+                        <h4 class="chart-title">🍩 Phân bổ theo loại quà</h4>
+                        <div class="chart-canvas">
+                            <div class="pie-container">
+                                <div class="pie-chart"></div>
+                                <div class="pie-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #3498db;"></span>
+                                        <span>Voucher (35%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #27ae60;"></span>
+                                        <span>Vật lý (40%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: #ffc107;"></span>
+                                        <span>Đặc quyền (25%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Line Chart: Trend -->
+                    <div class="chart-card">
+                        <h4 class="chart-title">📈 Xu hướng đổi quà</h4>
+                        <div class="chart-canvas">
+                            <div class="line-container">
+                                <div class="line-chart-grid"></div>
+                                <div class="line-points">
+                                    <div class="line-point" style="bottom: 30%; left: 5%;"></div>
+                                    <div class="line-point" style="bottom: 45%; left: 20%;"></div>
+                                    <div class="line-point" style="bottom: 60%; left: 35%;"></div>
+                                    <div class="line-point" style="bottom: 55%; left: 50%;"></div>
+                                    <div class="line-point" style="bottom: 70%; left: 65%;"></div>
+                                    <div class="line-point" style="bottom: 85%; left: 80%;"></div>
+                                    <div class="line-point" style="bottom: 75%; left: 95%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: History Content -->
+        <div id="history-tab" class="tab-content">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Thời gian</label>
+                        <div class="date-range">
+                            <input type="date" class="filter-date" id="startDate">
+                            <span>-</span>
+                            <input type="date" class="filter-date" id="endDate">
+                        </div>
+                    </div>
+                    <div class="filter-group" style="flex: 1;">
+                        <label class="filter-label">Hội viên</label>
+                        <input type="text" class="filter-input" id="searchMember" placeholder="Tên, ID, Email hoặc SĐT..." onkeyup="filterData()">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Hạng hội viên</label>
+                        <select class="filter-select" id="rankFilter" onchange="filterData()">
+                            <option value="">Tất cả</option>
+                            <option value="Member">Member</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Platinum">Platinum</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Loại quà</label>
+                        <select class="filter-select" id="giftTypeFilter" onchange="filterData()">
+                            <option value="">Tất cả</option>
+                            <option value="voucher">Voucher</option>
+                            <option value="physical">Vật lý</option>
+                            <option value="privilege">Đặc quyền</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Trạng thái</label>
+                        <select class="filter-select" id="statusFilter" onchange="filterData()">
+                            <option value="">Tất cả</option>
+                            <option value="Thành công">Thành công</option>
+                            <option value="Đang xử lý">Đang xử lý</option>
+                            <option value="Hết quà">Hết quà</option>
+                            <option value="Hủy">Hủy</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title">📋 Lịch sử đổi điểm thưởng của khách hàng</h3>
+                    <div class="table-actions">
+                        <button class="btn btn-secondary" onclick="exportCSV()">
+                            📥 Export CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportExcel()">
+                            📑 Export Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="redemption-table">
+                        <thead>
+                            <tr>
+                                <th width="130">Thời gian</th>
+                                <th width="180">Hội viên</th>
+                                <th width="80">Hạng</th>
+                                <th width="200">Quà đã đổi</th>
+                                <th width="120">Số điểm đã dùng</th>
+                                <th width="120">Tồn kho còn lại</th>
+                                <th width="100">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="redemptionTableBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn" onclick="previousPage()" id="prevBtn">←</button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">4</button>
+                    <button class="pagination-btn">5</button>
+                    <button class="pagination-btn" onclick="nextPage()" id="nextBtn">→</button>
+                    <span class="pagination-info">Hiển thị 1-20 / 100 bản ghi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gift Detail Modal -->
+    <div class="modal" id="giftDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalGiftTitle">Chi tiết quà</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <h3 class="detail-section-title">📦 Thông tin quà</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Mã quà:</div>
+                        <div class="detail-value" id="giftCode">VCH002</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Tên quà:</div>
+                        <div class="detail-value" id="giftName">Voucher 200K</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Loại quà:</div>
+                        <div class="detail-value" id="giftType">Voucher</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Ngày hết hạn:</div>
+                        <div class="detail-value" id="giftExpiry">31/12/2025</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3 class="detail-section-title">📊 Tồn kho & Cấu hình</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Tồn kho ERP:</div>
+                        <div class="detail-value" id="erpStock">280</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">SL cho phép đổi:</div>
+                        <div class="detail-value" id="allowedQty">250</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Điểm quy đổi:</div>
+                        <div class="detail-value"><span class="points-badge" id="redeemPoints">2000 điểm</span></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Tỷ lệ sử dụng:</div>
+                        <div class="detail-value" id="usageRate">65%</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3 class="detail-section-title">📈 Thống kê</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Tổng lượt đổi:</div>
+                        <div class="detail-value" id="totalRedeemed">1,234 lượt</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Điểm đã sử dụng:</div>
+                        <div class="detail-value" id="pointsUsed">2,468,000 điểm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data from CSV
+        const redemptionData = [
+            {"Thời gian":"20/09/2025 14:30","Hội viên":"Nguyễn Văn An","Hạng":"Gold","Quà đã đổi":"Voucher 200K","Số điểm đã dùng":2000,"Tồn kho còn lại":280,"Trạng thái":"Thành công"},
+            {"Thời gian":"19/09/2025 10:05","Hội viên":"Trần Thị Bình","Hạng":"Silver","Quà đã đổi":"Bình giữ nhiệt","Số điểm đã dùng":1500,"Tồn kho còn lại":115,"Trạng thái":"Thành công"},
+            {"Thời gian":"18/09/2025 09:20","Hội viên":"Lê Văn Cường","Hạng":"Member","Quà đã đổi":"Voucher Free Shipping","Số điểm đã dùng":500,"Tồn kho còn lại":800,"Trạng thái":"Hết quà"},
+            {"Thời gian":"17/09/2025 15:45","Hội viên":"Phạm Thị Dung","Hạng":"Platinum","Quà đã đổi":"Tai nghe Bluetooth","Số điểm đã dùng":3000,"Tồn kho còn lại":20,"Trạng thái":"Đang xử lý"},
+            {"Thời gian":"16/09/2025 11:30","Hội viên":"Hoàng Văn Em","Hạng":"Gold","Quà đã đổi":"Voucher 500K","Số điểm đã dùng":5000,"Tồn kho còn lại":150,"Trạng thái":"Thành công"},
+            {"Thời gian":"15/09/2025 08:15","Hội viên":"Ngô Thị Phượng","Hạng":"Silver","Quà đã đổi":"Coupon CGV 100K","Số điểm đã dùng":1000,"Tồn kho còn lại":450,"Trạng thái":"Thành công"},
+            {"Thời gian":"14/09/2025 16:20","Hội viên":"Đỗ Văn Giang","Hạng":"Member","Quà đã đổi":"Voucher 100K","Số điểm đã dùng":1000,"Tồn kho còn lại":380,"Trạng thái":"Thành công"},
+            {"Thời gian":"13/09/2025 13:45","Hội viên":"Vũ Thị Hoa","Hạng":"Gold","Quà đã đổi":"Balo du lịch","Số điểm đã dùng":2500,"Tồn kho còn lại":75,"Trạng thái":"Thành công"},
+            {"Thời gian":"12/09/2025 10:30","Hội viên":"Bùi Văn Inh","Hạng":"Platinum","Quà đã đổi":"Vali 24 inch","Số điểm đã dùng":4000,"Tồn kho còn lại":45,"Trạng thái":"Thành công"},
+            {"Thời gian":"11/09/2025 14:15","Hội viên":"Lý Thị Kiều","Hạng":"Silver","Quà đã đổi":"Coupon Grab 50K","Số điểm đã dùng":500,"Tồn kho còn lại":1200,"Trạng thái":"Thành công"},
+            {"Thời gian":"10/09/2025 09:00","Hội viên":"Mai Văn Long","Hạng":"Member","Quà đã đổi":"Voucher 200K","Số điểm đã dùng":2000,"Tồn kho còn lại":275,"Trạng thái":"Hủy"},
+            {"Thời gian":"09/09/2025 15:30","Hội viên":"Trương Thị Mai","Hạng":"Gold","Quà đã đổi":"Áo thun Vietravel","Số điểm đã dùng":800,"Tồn kho còn lại":180,"Trạng thái":"Thành công"},
+            {"Thời gian":"08/09/2025 11:45","Hội viên":"Đinh Văn Nam","Hạng":"Silver","Quà đã đổi":"Nón Vietravel","Số điểm đã dùng":400,"Tồn kho còn lại":450,"Trạng thái":"Thành công"},
+            {"Thời gian":"07/09/2025 08:30","Hội viên":"Cao Thị Oanh","Hạng":"Platinum","Quà đã đổi":"Voucher Phú Quốc 300K","Số điểm đã dùng":3000,"Tồn kho còn lại":120,"Trạng thái":"Thành công"},
+            {"Thời gian":"06/09/2025 16:00","Hội viên":"Phan Văn Phúc","Hạng":"Member","Quà đã đổi":"Coupon Shopee 100K","Số điểm đã dùng":1000,"Tồn kho còn lại":750,"Trạng thái":"Thành công"},
+            {"Thời gian":"05/09/2025 10:15","Hội viên":"Lê Thị Quỳnh","Hạng":"Gold","Quà đã đổi":"Voucher 200K","Số điểm đã dùng":2000,"Tồn kho còn lại":270,"Trạng thái":"Thành công"},
+            {"Thời gian":"04/09/2025 14:45","Hội viên":"Nguyễn Văn Râu","Hạng":"Silver","Quà đã đổi":"Bình giữ nhiệt","Số điểm đã dùng":1500,"Tồn kho còn lại":110,"Trạng thái":"Thành công"},
+            {"Thời gian":"03/09/2025 09:30","Hội viên":"Trần Thị Sương","Hạng":"Member","Quà đã đổi":"Voucher 100K","Số điểm đã dùng":1000,"Tồn kho còn lại":375,"Trạng thái":"Đang xử lý"},
+            {"Thời gian":"02/09/2025 15:15","Hội viên":"Hoàng Văn Tài","Hạng":"Platinum","Quà đã đổi":"Voucher 1000K","Số điểm đã dùng":10000,"Tồn kho còn lại":90,"Trạng thái":"Thành công"},
+            {"Thời gian":"01/09/2025 11:00","Hội viên":"Phạm Thị Uyên","Hạng":"Gold","Quà đã đổi":"Tai nghe Bluetooth","Số điểm đã dùng":3000,"Tồn kho còn lại":18,"Trạng thái":"Thành công"}
+        ];
+
+        let currentPage = 1;
+        const rowsPerPage = 20;
+        let filteredData = [...redemptionData];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRedemptionData();
+            updateDashboard();
+            setDefaultDates();
+        });
+
+        // Switch tabs
+        function switchTab(tabName, element) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            if (tabName === 'history') {
+                loadRedemptionData();
+            }
+        }
+
+        // Set default dates for filter
+        function setDefaultDates() {
+            const today = new Date();
+            const lastMonth = new Date();
+            lastMonth.setDate(today.getDate() - 30);
+            
+            document.getElementById('endDate').valueAsDate = today;
+            document.getElementById('startDate').valueAsDate = lastMonth;
+        }
+
+        // Load redemption data to table
+        function loadRedemptionData() {
+            const tbody = document.getElementById('redemptionTableBody');
+            tbody.innerHTML = '';
+
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            pageData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item['Thời gian']}</td>
+                    <td><strong>${item['Hội viên']}</strong></td>
+                    <td>${getMemberBadge(item['Hạng'])}</td>
+                    <td><a class="gift-link" onclick="showGiftDetail('${item['Quà đã đổi']}')">${item['Quà đã đổi']}</a></td>
+                    <td><span class="points-badge">${item['Số điểm đã dùng'].toLocaleString()}</span></td>
+                    <td>${item['Tồn kho còn lại'].toLocaleString()}</td>
+                    <td>${getStatusPill(item['Trạng thái'])}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Get member badge HTML
+        function getMemberBadge(rank) {
+            const badges = {
+                'Member': 'badge-member',
+                'Silver': 'badge-silver',
+                'Gold': 'badge-gold',
+                'Platinum': 'badge-platinum'
+            };
+            return `<span class="member-badge ${badges[rank] || 'badge-member'}">${rank}</span>`;
+        }
+
+        // Get status pill HTML
+        function getStatusPill(status) {
+            const statuses = {
+                'Thành công': 'status-success',
+                'Đang xử lý': 'status-pending',
+                'Hết quà': 'status-outofstock',
+                'Hủy': 'status-cancelled'
+            };
+            return `<span class="status-pill ${statuses[status] || ''}">${status}</span>`;
+        }
+
+        // Update dashboard statistics
+        function updateDashboard() {
+            // Calculate statistics
+            const totalPoints = redemptionData.reduce((sum, item) => sum + item['Số điểm đã dùng'], 0);
+            const totalGifts = redemptionData.length;
+            const avgStock = Math.round(redemptionData.reduce((sum, item) => sum + item['Tồn kho còn lại'], 0) / totalGifts);
+            const successRate = (redemptionData.filter(item => item['Trạng thái'] === 'Thành công').length / totalGifts * 100).toFixed(1);
+
+            // Update UI
+            document.getElementById('totalPoints').textContent = totalPoints.toLocaleString();
+            document.getElementById('totalGifts').textContent = totalGifts.toLocaleString();
+            document.getElementById('currentStock').textContent = (avgStock * 20).toLocaleString(); // Simulated total
+            document.getElementById('conversionRate').textContent = successRate + '%';
+        }
+
+        // Update charts
+        function updateCharts() {
+            console.log('Charts updated with filters');
+            // In real implementation, redraw charts based on filters
+        }
+
+        // Filter data
+        function filterData() {
+            const searchTerm = document.getElementById('searchMember').value.toLowerCase();
+            const rankFilter = document.getElementById('rankFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            filteredData = redemptionData.filter(item => {
+                if (searchTerm && !item['Hội viên'].toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                if (rankFilter && item['Hạng'] !== rankFilter) {
+                    return false;
+                }
+                if (statusFilter && item['Trạng thái'] !== statusFilter) {
+                    return false;
+                }
+                return true;
+            });
+            
+            currentPage = 1;
+            loadRedemptionData();
+        }
+
+        // Show gift detail modal
+        function showGiftDetail(giftName) {
+            document.getElementById('modalGiftTitle').textContent = 'Chi tiết: ' + giftName;
+            document.getElementById('giftName').textContent = giftName;
+            
+            // Simulate gift details based on name
+            const giftDetails = {
+                'Voucher 200K': { code: 'VCH002', type: 'Voucher', expiry: '31/12/2025', stock: 280, points: 2000 },
+                'Bình giữ nhiệt': { code: 'GIFT001', type: 'Vật lý', expiry: '30/06/2025', stock: 115, points: 1500 },
+                'Voucher 100K': { code: 'VCH001', type: 'Voucher', expiry: '31/12/2025', stock: 380, points: 1000 },
+                'Tai nghe Bluetooth': { code: 'GIFT003', type: 'Vật lý', expiry: '30/06/2025', stock: 20, points: 3000 }
+            };
+            
+            const detail = giftDetails[giftName] || { code: 'N/A', type: 'N/A', expiry: 'N/A', stock: 0, points: 0 };
+            
+            document.getElementById('giftCode').textContent = detail.code;
+            document.getElementById('giftType').textContent = detail.type;
+            document.getElementById('giftExpiry').textContent = detail.expiry;
+            document.getElementById('erpStock').textContent = detail.stock;
+            document.getElementById('allowedQty').textContent = Math.round(detail.stock * 0.9);
+            document.getElementById('redeemPoints').textContent = detail.points.toLocaleString() + ' điểm';
+            document.getElementById('usageRate').textContent = Math.round(Math.random() * 40 + 40) + '%';
+            document.getElementById('totalRedeemed').textContent = Math.round(Math.random() * 1000 + 500).toLocaleString() + ' lượt';
+            document.getElementById('pointsUsed').textContent = (detail.points * 1234).toLocaleString() + ' điểm';
+            
+            document.getElementById('giftDetailModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('giftDetailModal').classList.remove('active');
+        }
+
+        // Pagination
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadRedemptionData();
+            }
+        }
+
+        function nextPage() {
+            const maxPage = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage < maxPage) {
+                currentPage++;
+                loadRedemptionData();
+            }
+        }
+
+        // Export functions
+        function exportCSV() {
+            alert('Xuất file CSV lịch sử đổi điểm thưởng');
+        }
+
+        function exportExcel() {
+            alert('Xuất file Excel lịch sử đổi điểm thưởng');
+        }
+
+        // Refresh data
+        function refreshData() {
+            loadRedemptionData();
+            updateDashboard();
+            updateCharts();
+            alert('Dữ liệu đã được làm mới!');
+        }
+
+        // Sync with ERP
+        function syncERP() {
+            if (confirm('Đồng bộ dữ liệu tồn kho với hệ thống ERP?')) {
+                alert('Đang đồng bộ dữ liệu...\nĐã cập nhật tồn kho từ hệ thống ERP');
+                updateDashboard();
+            }
+        }
+    </script>
+</body>
+</html>
