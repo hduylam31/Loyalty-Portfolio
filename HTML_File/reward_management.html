@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý phần thưởng - Vietravel Loyalty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1405px;
+            margin: 0 auto;
+        }
+
+        /* Header Actions */
+        .header-actions {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .tab.active {
+            color: #3498db;
+            background: white;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3498db;
+        }
+
+        .tab-badge {
+            background: #e9ecef;
+            color: #6c757d;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        .tab.active .tab-badge {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-subtitle {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 150px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .filter-select, .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .filter-input {
+            min-width: 250px;
+        }
+
+        /* Main Table */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table-stats {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .rewards-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .rewards-table th {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .rewards-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+
+        .rewards-table tbody tr {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rewards-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Status Pills */
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-inactive { background: #f8d7da; color: #721c24; }
+        .status-pending { background: #fff3cd; color: #856404; }
+
+        /* Type Badges */
+        .type-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .type-physical { background: #d1ecf1; color: #0c5460; }
+        .type-voucher { background: #d4edda; color: #155724; }
+        .type-coupon { background: #fff3cd; color: #856404; }
+
+        /* Category Badge */
+        .category-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .category-redemption { background: #e3f2fd; color: #1565c0; }
+        .category-program { background: #f3e5f5; color: #6a1b9a; }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            width: 100px;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3498db;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        /* Action Icons */
+        .action-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #dee2e6;
+            background: white;
+        }
+
+        .action-icon:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .action-icon.view { color: #3498db; }
+        .action-icon.edit { color: #f39c12; }
+        .action-icon.pause { color: #e67e22; }
+        .action-icon.delete { color: #e74c3c; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 5px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .form-input, .form-select {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-input[readonly] {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        /* Item Search */
+        .item-search-container {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+        }
+
+        .search-header {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .item-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+        }
+
+        .item-option {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f1f3f4;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .item-option:hover {
+            background: #e3f2fd;
+        }
+
+        .item-option.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-code {
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .item-name {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .item-stock {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .item-option.selected .item-stock {
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        .table-wrapper::-webkit-scrollbar,
+        .modal-content::-webkit-scrollbar,
+        .item-list::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track,
+        .modal-content::-webkit-scrollbar-track,
+        .item-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb,
+        .modal-content::-webkit-scrollbar-thumb,
+        .item-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        /* Points badge */
+        .points-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <h1 class="page-title">🎁 Quản lý Phần thưởng</h1>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openCreateModal()">
+                    ➕ Thêm phần thưởng mới
+                </button>
+                <button class="btn btn-secondary" onclick="exportRewards()">
+                    📥 Export CSV
+                </button>
+                <button class="btn btn-secondary" onclick="importRewards()">
+                    📤 Import CSV
+                </button>
+                <button class="btn btn-success" onclick="syncERP()">
+                    🔄 Đồng bộ ERP
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('all', this)">
+                    Tất cả quà
+                    <span class="tab-badge" id="allCount">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('redemption', this)">
+                    Quà quy đổi
+                    <span class="tab-badge" id="redemptionCount">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('program', this)">
+                    Quà chương trình
+                    <span class="tab-badge" id="programCount">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Tổng phần thưởng</div>
+                <div class="stat-value" id="totalRewards">0</div>
+                <div class="stat-subtitle">
+                    <span style="color: #3498db;" id="physicalCount">0 Vật lý</span> | 
+                    <span style="color: #27ae60;" id="voucherCount">0 Voucher</span> | 
+                    <span style="color: #f39c12;" id="couponCount">0 Coupon</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Đang hoạt động</div>
+                <div class="stat-value" id="activeRewards">0</div>
+                <div class="stat-subtitle">Có thể đổi ngay</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tổng điểm đã đổi</div>
+                <div class="stat-value">2.8M</div>
+                <div class="stat-subtitle">Tháng này: 450K điểm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Phần thưởng phổ biến</div>
+                <div class="stat-value">V500K</div>
+                <div class="stat-subtitle">Voucher Tour 500K (1,234 lượt)</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-row">
+                <div class="filter-group" style="flex: 1;">
+                    <label class="filter-label">Tìm kiếm</label>
+                    <input type="text" class="filter-input" id="searchInput" placeholder="Nhập mã hoặc tên phần thưởng..." onkeyup="filterRewards()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Loại quà</label>
+                    <select class="filter-select" id="typeFilter" onchange="filterRewards()">
+                        <option value="">Tất cả</option>
+                        <option value="Vật lý">Quà vật lý</option>
+                        <option value="Voucher">Voucher</option>
+                        <option value="Coupon">Coupon</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Trạng thái</label>
+                    <select class="filter-select" id="statusFilter" onchange="filterRewards()">
+                        <option value="">Tất cả</option>
+                        <option value="Active">Đang hoạt động</option>
+                        <option value="Inactive">Tạm dừng</option>
+                        <option value="Hết hàng">Hết hàng</option>
+                        <option value="Hết hạn">Hết hạn</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Mức điểm</label>
+                    <select class="filter-select" id="pointsFilter" onchange="filterRewards()">
+                        <option value="">Tất cả</option>
+                        <option value="0-500">0 - 500 điểm</option>
+                        <option value="500-1000">500 - 1000 điểm</option>
+                        <option value="1000-2000">1000 - 2000 điểm</option>
+                        <option value="2000+">Trên 2000 điểm</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3 class="table-title">Danh sách phần thưởng</h3>
+                <div class="table-stats" id="tableStats">Hiển thị 0 phần thưởng</div>
+            </div>
+            <div class="table-wrapper">
+                <table class="rewards-table">
+                    <thead>
+                        <tr>
+                            <th width="100">Mã quà</th>
+                            <th width="220">Tên quà</th>
+                            <th width="80">Loại</th>
+                            <th width="100">Phân loại</th>
+                            <th width="100">Tồn kho (ERP)</th>
+                            <th width="120">SL cho phép đổi</th>
+                            <th width="100">% Sử dụng</th>
+                            <th width="100">Điểm quy đổi</th>
+                            <th width="120">Ngày hết hạn</th>
+                            <th width="80">Trạng thái</th>
+                            <th width="100">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rewardsTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div class="modal" id="rewardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Thêm phần thưởng mới</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- Gift Type Selection -->
+                <div class="form-section">
+                    <h3 class="form-section-title">🎁 Loại phần thưởng</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <label style="padding: 15px; border: 2px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" 
+                               onmouseover="this.style.borderColor='#3498db'" onmouseout="this.style.borderColor='#dee2e6'" id="redemptionLabel">
+                            <input type="radio" name="giftType" value="redemption" checked onchange="toggleGiftType('redemption')" style="margin-right: 10px;">
+                            <strong style="color: #2c3e50;">Quà quy đổi</strong>
+                            <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">Hội viên dùng điểm thưởng để đổi quà</div>
+                        </label>
+                        <label style="padding: 15px; border: 2px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" 
+                               onmouseover="this.style.borderColor='#27ae60'" onmouseout="this.style.borderColor='#dee2e6'" id="programLabel">
+                            <input type="radio" name="giftType" value="program" onchange="toggleGiftType('program')" style="margin-right: 10px;">
+                            <strong style="color: #2c3e50;">Quà chương trình</strong>
+                            <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">Quà tặng từ chiến dịch khuyến mãi</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 1: Select Item -->
+                <div class="form-section" id="itemSelectSection">
+                    <h3 class="form-section-title">📦 Chọn phần quà từ kho ERP</h3>
+                    <div class="item-search-container">
+                        <div class="search-header">
+                            <input type="text" class="search-input" placeholder="Tìm kiếm theo mã hoặc tên..." onkeyup="searchItems(this.value)">
+                            <select class="form-select" style="width: 150px;" onchange="filterItemType(this.value)">
+                                <option value="">Tất cả loại</option>
+                                <option value="physical">Quà vật lý</option>
+                                <option value="voucher">Voucher</option>
+                                <option value="coupon">Coupon</option>
+                            </select>
+                        </div>
+                        <div class="item-list" id="itemList">
+                            <!-- Items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Item Details -->
+                <div class="form-section" id="selectedItemDetails" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 class="form-section-title">📋 Thông tin sản phẩm đã chọn</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
+                        <div id="itemImage" style="background: white; border-radius: 8px; padding: 10px; min-height: 150px; display: flex; align-items: center; justify-content: center; border: 1px solid #dee2e6;">
+                            <img src="" alt="" style="max-width: 100%; max-height: 150px; display: none;">
+                            <span style="color: #6c757d;">📷 Hình ảnh</span>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 10px;">
+                                <strong style="color: #2c3e50; font-size: 16px;" id="selectedItemName">--</strong>
+                                <span style="margin-left: 10px; background: #e3f2fd; padding: 2px 8px; border-radius: 4px; font-size: 11px;" id="selectedItemCode">--</span>
+                            </div>
+                            <div style="color: #6c757d; font-size: 13px; margin-bottom: 15px;" id="selectedItemDesc">--</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 12px;">
+                                <div><strong>Nhà cung cấp:</strong> <span id="selectedSupplier">--</span></div>
+                                <div><strong>Danh mục:</strong> <span id="selectedCategory">--</span></div>
+                                <div><strong>Tồn kho ERP:</strong> <span id="selectedStock" style="color: #27ae60; font-weight: bold;">--</span></div>
+                                <div><strong>Giá vốn:</strong> <span id="selectedCost" style="color: #e74c3c;">--</span></div>
+                                <div id="additionalInfo1"></div>
+                                <div id="additionalInfo2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration -->
+                <div class="form-section">
+                    <h3 class="form-section-title" id="configSectionTitle">⚙️ Cấu hình điểm và số lượng</h3>
+                    
+                    <!-- Basic Info (From ERP) -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Mã phần quà</label>
+                            <input type="text" class="form-input" id="rewardCode" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tên phần quà</label>
+                            <input type="text" class="form-input" id="rewardName" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Loại quà</label>
+                            <input type="text" class="form-input" id="rewardType" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số lượng tồn kho (ERP)</label>
+                            <input type="number" class="form-input" id="erpStock" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Configuration for Redemption Gift -->
+                    <div class="form-row" id="redemptionConfig">
+                        <div class="form-group">
+                            <label class="form-label">Điểm quy đổi *</label>
+                            <input type="number" class="form-input" id="redeemPoints" placeholder="Nhập số điểm cần để đổi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số lượng cho phép đổi *</label>
+                            <input type="number" class="form-input" id="allocatedQty" placeholder="Tối đa bằng tồn kho" onblur="validateAllocation()">
+                        </div>
+                    </div>
+
+                    <!-- Configuration for Program Gift -->
+                    <div class="form-row" id="programConfig" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Số lượng phân bổ *</label>
+                            <input type="number" class="form-input" id="programQty" placeholder="Tối đa bằng tồn kho">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ghi chú chương trình</label>
+                            <input type="text" class="form-input" id="programNote" placeholder="VD: Tặng kèm tour Châu Âu">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Ngày hết hạn</label>
+                            <input type="date" class="form-input" id="expiryDate">
+                        </div>
+                        <div class="form-group" id="autoReplenishGroup">
+                            <label class="form-label">
+                                <input type="checkbox" id="autoReplenish"> Tự động bổ sung khi hết hàng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-section" style="border-top: 1px solid #e9ecef; padding-top: 20px;">
+                    <div class="action-buttons" style="justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+                        <button class="btn btn-primary" onclick="saveReward()">Lưu cấu hình</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailModalTitle">Chi tiết phần thưởng</h2>
+                <button class="modal-close" onclick="closeDetailModal()">×</button>
+            </div>
+            <div class="modal-body" id="detailModalBody">
+                <!-- Content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample rewards data - adjusted for new requirements
+        const rewardsData = [
+            {"Mã quà":"VCH001","Tên quà":"Voucher Tour 100.000đ","Loại":"Voucher","Phân loại":"Quà quy đổi","Tồn kho (ERP)":500,"Số lượng cho phép đổi":300,"Điểm quy đổi":100,"Ngày hết hạn":"31/12/2025","Trạng thái":"Active"},
+            {"Mã quà":"VCH002","Tên quà":"Voucher Tour 200.000đ","Loại":"Voucher","Phân loại":"Quà quy đổi","Tồn kho (ERP)":400,"Số lượng cho phép đổi":250,"Điểm quy đổi":200,"Ngày hết hạn":"31/12/2025","Trạng thái":"Active"},
+            {"Mã quà":"VCH003","Tên quà":"Voucher Tour 500.000đ","Loại":"Voucher","Phân loại":"Quà quy đổi","Tồn kho (ERP)":300,"Số lượng cho phép đổi":200,"Điểm quy đổi":500,"Ngày hết hạn":"31/12/2025","Trạng thái":"Active"},
+            {"Mã quà":"VCH004","Tên quà":"Voucher Tour 1.000.000đ","Loại":"Voucher","Phân loại":"Quà chương trình","Tồn kho (ERP)":200,"Số lượng cho phép đổi":100,"Điểm quy đổi":0,"Ngày hết hạn":"31/12/2025","Trạng thái":"Active"},
+            {"Mã quà":"GIFT001","Tên quà":"Bình giữ nhiệt Vietravel","Loại":"Vật lý","Phân loại":"Quà quy đổi","Tồn kho (ERP)":120,"Số lượng cho phép đổi":100,"Điểm quy đổi":500,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"},
+            {"Mã quà":"GIFT002","Tên quà":"Balo du lịch cao cấp","Loại":"Vật lý","Phân loại":"Quà quy đổi","Tồn kho (ERP)":80,"Số lượng cho phép đổi":50,"Điểm quy đổi":1200,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"},
+            {"Mã quà":"GIFT003","Tên quà":"Vali kéo 24 inch","Loại":"Vật lý","Phân loại":"Quà quy đổi","Tồn kho (ERP)":50,"Số lượng cho phép đổi":30,"Điểm quy đổi":2000,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"},
+            {"Mã quà":"GIFT004","Tên quà":"Áo thun Vietravel","Loại":"Vật lý","Phân loại":"Quà chương trình","Tồn kho (ERP)":300,"Số lượng cho phép đổi":200,"Điểm quy đổi":0,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"},
+            {"Mã quà":"CPN001","Tên quà":"Coupon CGV 100.000đ","Loại":"Coupon","Phân loại":"Quà quy đổi","Tồn kho (ERP)":1000,"Số lượng cho phép đổi":500,"Điểm quy đổi":150,"Ngày hết hạn":"31/03/2025","Trạng thái":"Active"},
+            {"Mã quà":"CPN002","Tên quà":"Coupon Grab 50.000đ","Loại":"Coupon","Phân loại":"Quà quy đổi","Tồn kho (ERP)":2000,"Số lượng cho phép đổi":1000,"Điểm quy đổi":75,"Ngày hết hạn":"31/03/2025","Trạng thái":"Active"},
+            {"Mã quà":"VCH005","Tên quà":"Voucher Phú Quốc 300.000đ","Loại":"Voucher","Phân loại":"Quà chương trình","Tồn kho (ERP)":150,"Số lượng cho phép đổi":150,"Điểm quy đổi":0,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"},
+            {"Mã quà":"GIFT005","Tên quà":"Nón Vietravel Limited","Loại":"Vật lý","Phân loại":"Quà chương trình","Tồn kho (ERP)":500,"Số lượng cho phép đổi":300,"Điểm quy đổi":0,"Ngày hết hạn":"31/12/2025","Trạng thái":"Active"},
+            {"Mã quà":"CPN003","Tên quà":"Coupon Shopee 100.000đ","Loại":"Coupon","Phân loại":"Quà quy đổi","Tồn kho (ERP)":800,"Số lượng cho phép đổi":400,"Điểm quy đổi":120,"Ngày hết hạn":"30/06/2025","Trạng thái":"Active"}
+        ];
+
+        // Sample ERP items - adjusted to remove services
+        const erpItems = [
+            {
+                code: "VCH001", 
+                name: "Voucher Tour 100.000đ", 
+                type: "voucher", 
+                stock: 500,
+                description: "Voucher giảm giá tour du lịch trị giá 100.000đ",
+                supplier: "Vietravel",
+                cost: 85000,
+                validityDays: 365,
+                minOrderValue: 1000000,
+                category: "Tour nội địa",
+                image: "voucher-100k.jpg"
+            },
+            {
+                code: "VCH002", 
+                name: "Voucher Tour 200.000đ", 
+                type: "voucher", 
+                stock: 400,
+                description: "Voucher giảm giá tour du lịch trị giá 200.000đ",
+                supplier: "Vietravel",
+                cost: 170000,
+                validityDays: 365,
+                minOrderValue: 2000000,
+                category: "Tour nội địa",
+                image: "voucher-200k.jpg"
+            },
+            {
+                code: "VCH003", 
+                name: "Voucher Tour 500.000đ", 
+                type: "voucher", 
+                stock: 300,
+                description: "Voucher giảm giá tour du lịch trị giá 500.000đ",
+                supplier: "Vietravel",
+                cost: 425000,
+                validityDays: 365,
+                minOrderValue: 5000000,
+                category: "Tour quốc tế",
+                image: "voucher-500k.jpg"
+            },
+            {
+                code: "GIFT001", 
+                name: "Bình giữ nhiệt Vietravel", 
+                type: "physical", 
+                stock: 120,
+                description: "Bình giữ nhiệt cao cấp 500ml với logo Vietravel",
+                supplier: "Lock&Lock",
+                cost: 250000,
+                weight: "350g",
+                dimensions: "7x7x25cm",
+                warranty: "12 tháng",
+                category: "Đồ dùng du lịch",
+                image: "binh-giu-nhiet.jpg"
+            },
+            {
+                code: "GIFT002", 
+                name: "Balo du lịch cao cấp", 
+                type: "physical", 
+                stock: 80,
+                description: "Balo du lịch 40L chống thấm nước, nhiều ngăn tiện dụng",
+                supplier: "Samsonite",
+                cost: 850000,
+                weight: "1.2kg",
+                dimensions: "50x30x20cm",
+                warranty: "24 tháng",
+                category: "Đồ dùng du lịch",
+                image: "balo-du-lich.jpg"
+            },
+            {
+                code: "GIFT003",
+                name: "Vali kéo 24 inch",
+                type: "physical",
+                stock: 50,
+                description: "Vali kéo size trung 24 inch, 4 bánh xoay 360 độ",
+                supplier: "American Tourister",
+                cost: 1500000,
+                weight: "3.5kg",
+                dimensions: "60x40x25cm",
+                warranty: "36 tháng",
+                category: "Đồ dùng du lịch",
+                image: "vali-24inch.jpg"
+            },
+            {
+                code: "CPN001", 
+                name: "Coupon CGV 100K", 
+                type: "coupon", 
+                stock: 5000,
+                description: "Coupon xem phim tại CGV trị giá 100.000đ",
+                supplier: "CGV Vietnam",
+                cost: 85000,
+                validityDays: 90,
+                applicableDays: "Tất cả các ngày",
+                format: "QR Code",
+                category: "Giải trí",
+                image: "cgv-voucher.jpg"
+            },
+            {
+                code: "CPN002", 
+                name: "Coupon Grab 50K", 
+                type: "coupon", 
+                stock: 3000,
+                description: "Coupon Grab di chuyển trị giá 50.000đ",
+                supplier: "Grab Vietnam",
+                cost: 42000,
+                validityDays: 30,
+                applicableServices: "GrabCar, GrabBike",
+                maxUsage: 1,
+                category: "Vận chuyển",
+                image: "grab-voucher.jpg"
+            },
+            {
+                code: "GIFT004",
+                name: "Áo thun Vietravel Limited",
+                type: "physical",
+                stock: 200,
+                description: "Áo thun cotton 100% phiên bản giới hạn với thiết kế độc quyền",
+                supplier: "Vietravel Merchandise",
+                cost: 150000,
+                sizes: "S, M, L, XL",
+                material: "Cotton 100%",
+                colors: "Trắng, Xanh navy",
+                category: "Thời trang",
+                image: "tshirt-limited.jpg"
+            },
+            {
+                code: "GIFT005",
+                name: "Nón Vietravel Limited",
+                type: "physical",
+                stock: 500,
+                description: "Nón lưỡi trai cao cấp với logo Vietravel thêu",
+                supplier: "Vietravel Merchandise",
+                cost: 80000,
+                material: "Cotton blend",
+                colors: "Đen, Trắng, Xanh navy",
+                category: "Thời trang",
+                image: "cap-vietravel.jpg"
+            },
+            {
+                code: "CPN003",
+                name: "Coupon Shopee 100K",
+                type: "coupon",
+                stock: 800,
+                description: "Coupon mua sắm Shopee trị giá 100.000đ",
+                supplier: "Shopee Vietnam",
+                cost: 85000,
+                validityDays: 60,
+                minPurchase: 300000,
+                category: "Mua sắm",
+                image: "shopee-coupon.jpg"
+            },
+            {
+                code: "VCH005",
+                name: "Voucher Phú Quốc 300.000đ",
+                type: "voucher",
+                stock: 150,
+                description: "Voucher giảm giá tour Phú Quốc trị giá 300.000đ",
+                supplier: "Vietravel",
+                cost: 255000,
+                validityDays: 180,
+                minOrderValue: 3000000,
+                category: "Tour biển đảo",
+                image: "voucher-pq.jpg"
+            }
+        ];
+
+        let filteredRewards = [...rewardsData];
+        let selectedItem = null;
+        let editingReward = null;
+        let currentGiftType = 'redemption';
+        let currentTab = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRewards();
+            updateStats();
+            updateTabCounts();
+        });
+
+        // Switch tab
+        function switchTab(tab, element) {
+            currentTab = tab;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Filter rewards based on tab
+            filterRewards();
+        }
+
+        // Update tab counts
+        function updateTabCounts() {
+            const all = rewardsData.length;
+            const redemption = rewardsData.filter(r => r['Phân loại'] === 'Quà quy đổi').length;
+            const program = rewardsData.filter(r => r['Phân loại'] === 'Quà chương trình').length;
+            
+            document.getElementById('allCount').textContent = all;
+            document.getElementById('redemptionCount').textContent = redemption;
+            document.getElementById('programCount').textContent = program;
+        }
+
+        // Toggle between gift types
+        function toggleGiftType(type) {
+            currentGiftType = type;
+            
+            const redemptionConfig = document.getElementById('redemptionConfig');
+            const programConfig = document.getElementById('programConfig');
+            const redemptionLabel = document.getElementById('redemptionLabel');
+            const programLabel = document.getElementById('programLabel');
+            const configTitle = document.getElementById('configSectionTitle');
+            
+            if (type === 'redemption') {
+                redemptionConfig.style.display = 'grid';
+                programConfig.style.display = 'none';
+                
+                redemptionLabel.style.backgroundColor = '#e3f2fd';
+                redemptionLabel.style.borderColor = '#3498db';
+                programLabel.style.backgroundColor = 'white';
+                programLabel.style.borderColor = '#dee2e6';
+                
+                configTitle.textContent = '⚙️ Cấu hình điểm và số lượng';
+            } else {
+                redemptionConfig.style.display = 'none';
+                programConfig.style.display = 'grid';
+                
+                programLabel.style.backgroundColor = '#d4edda';
+                programLabel.style.borderColor = '#27ae60';
+                redemptionLabel.style.backgroundColor = 'white';
+                redemptionLabel.style.borderColor = '#dee2e6';
+                
+                configTitle.textContent = '⚙️ Cấu hình số lượng';
+                
+                const erpStock = document.getElementById('erpStock').value;
+                document.getElementById('programQty').max = erpStock;
+            }
+        }
+
+        // Load rewards to table
+        function loadRewards() {
+            const tbody = document.getElementById('rewardsTableBody');
+            tbody.innerHTML = '';
+
+            filteredRewards.forEach(reward => {
+                const row = document.createElement('tr');
+                const usagePercent = Math.round((reward['Số lượng cho phép đổi'] - Math.random() * reward['Số lượng cho phép đổi']) / reward['Số lượng cho phép đổi'] * 100);
+                
+                row.innerHTML = `
+                    <td><strong>${reward['Mã quà']}</strong></td>
+                    <td>${reward['Tên quà']}</td>
+                    <td>${getTypeBadge(reward['Loại'])}</td>
+                    <td>${getCategoryBadge(reward['Phân loại'])}</td>
+                    <td>${reward['Tồn kho (ERP)'].toLocaleString()}</td>
+                    <td>${reward['Số lượng cho phép đổi'].toLocaleString()}</td>
+                    <td>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: ${usagePercent}%"></div>
+                        </div>
+                        <div class="progress-text">${usagePercent}% đã dùng</div>
+                    </td>
+                    <td>${reward['Điểm quy đổi'] > 0 ? `<span class="points-badge">${reward['Điểm quy đổi'].toLocaleString()} điểm</span>` : '-'}</td>
+                    <td>${reward['Ngày hết hạn']}</td>
+                    <td>${getStatusPill(reward['Trạng thái'])}</td>
+                    <td>${getActionButtons(reward)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('tableStats').textContent = `Hiển thị ${filteredRewards.length} phần thưởng`;
+        }
+
+        // Get type badge HTML
+        function getTypeBadge(type) {
+            const typeClasses = {
+                'Vật lý': 'type-physical',
+                'Voucher': 'type-voucher',
+                'Coupon': 'type-coupon'
+            };
+            return `<span class="type-badge ${typeClasses[type] || ''}">${type}</span>`;
+        }
+
+        // Get category badge HTML
+        function getCategoryBadge(category) {
+            const categoryClasses = {
+                'Quà quy đổi': 'category-redemption',
+                'Quà chương trình': 'category-program'
+            };
+            return `<span class="category-badge ${categoryClasses[category] || ''}">${category}</span>`;
+        }
+
+        // Get status pill HTML
+        function getStatusPill(status) {
+            const statusClasses = {
+                'Active': 'status-active',
+                'Inactive': 'status-inactive',
+                'Hết hàng': 'status-pending'
+            };
+            return `<span class="status-pill ${statusClasses[status] || ''}">${status}</span>`;
+        }
+
+        // Get action buttons HTML
+        function getActionButtons(reward) {
+            const status = reward['Trạng thái'];
+            let buttons = `
+                <div class="action-icons">
+                    <div class="action-icon view" onclick="viewReward('${reward['Mã quà']}')" title="Xem">👁️</div>
+                    <div class="action-icon edit" onclick="editReward('${reward['Mã quà']}')" title="Sửa">✏️</div>
+            `;
+            
+            if (status === 'Active') {
+                buttons += `<div class="action-icon pause" onclick="pauseReward('${reward['Mã quà']}')" title="Tạm dừng">⏸️</div>`;
+            } else {
+                buttons += `<div class="action-icon delete" onclick="deleteReward('${reward['Mã quà']}')" title="Xóa">🗑️</div>`;
+            }
+            
+            buttons += '</div>';
+            return buttons;
+        }
+
+        // Filter rewards
+        function filterRewards() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const pointsFilter = document.getElementById('pointsFilter').value;
+            
+            filteredRewards = rewardsData.filter(reward => {
+                // Tab filter
+                if (currentTab === 'redemption' && reward['Phân loại'] !== 'Quà quy đổi') {
+                    return false;
+                }
+                if (currentTab === 'program' && reward['Phân loại'] !== 'Quà chương trình') {
+                    return false;
+                }
+                
+                // Search filter
+                if (searchTerm && 
+                    !reward['Mã quà'].toLowerCase().includes(searchTerm) && 
+                    !reward['Tên quà'].toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Type filter
+                if (typeFilter && reward['Loại'] !== typeFilter) {
+                    return false;
+                }
+                
+                // Status filter
+                if (statusFilter && reward['Trạng thái'] !== statusFilter) {
+                    return false;
+                }
+                
+                // Points filter
+                if (pointsFilter && reward['Phân loại'] === 'Quà quy đổi') {
+                    const points = reward['Điểm quy đổi'];
+                    if (pointsFilter === '0-500' && (points < 0 || points > 500)) return false;
+                    if (pointsFilter === '500-1000' && (points < 500 || points > 1000)) return false;
+                    if (pointsFilter === '1000-2000' && (points < 1000 || points > 2000)) return false;
+                    if (pointsFilter === '2000+' && points < 2000) return false;
+                }
+                
+                return true;
+            });
+            
+            loadRewards();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const physicalCount = rewardsData.filter(r => r['Loại'] === 'Vật lý').length;
+            const voucherCount = rewardsData.filter(r => r['Loại'] === 'Voucher').length;
+            const couponCount = rewardsData.filter(r => r['Loại'] === 'Coupon').length;
+            
+            document.getElementById('totalRewards').textContent = rewardsData.length;
+            document.getElementById('activeRewards').textContent = rewardsData.filter(r => r['Trạng thái'] === 'Active').length;
+            document.getElementById('physicalCount').textContent = physicalCount + ' Vật lý';
+            document.getElementById('voucherCount').textContent = voucherCount + ' Voucher';
+            document.getElementById('couponCount').textContent = couponCount + ' Coupon';
+        }
+
+        // Open create modal
+        function openCreateModal() {
+            editingReward = null;
+            selectedItem = null;
+            document.getElementById('modalTitle').textContent = 'Thêm phần thưởng mới';
+            loadERPItems();
+            clearForm();
+            document.getElementById('rewardModal').classList.add('active');
+        }
+
+        // Load ERP items to select list
+        function loadERPItems() {
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            
+            erpItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-option';
+                itemDiv.onclick = () => selectItem(item);
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-code">${item.code}</div>
+                        <div class="item-name">${item.name}</div>
+                    </div>
+                    <div class="item-stock">Tồn: ${item.stock.toLocaleString()}</div>
+                `;
+                itemList.appendChild(itemDiv);
+            });
+        }
+
+        // Select an item from ERP
+        function selectItem(item) {
+            selectedItem = item;
+            
+            // Update UI
+            document.querySelectorAll('.item-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            // Show selected item details section
+            document.getElementById('selectedItemDetails').style.display = 'block';
+            
+            // Populate selected item details
+            document.getElementById('selectedItemName').textContent = item.name;
+            document.getElementById('selectedItemCode').textContent = item.code;
+            document.getElementById('selectedItemDesc').textContent = item.description;
+            document.getElementById('selectedSupplier').textContent = item.supplier;
+            document.getElementById('selectedCategory').textContent = item.category;
+            document.getElementById('selectedStock').textContent = item.stock.toLocaleString();
+            document.getElementById('selectedCost').textContent = item.cost.toLocaleString() + 'đ';
+            
+            // Show type-specific information
+            const info1 = document.getElementById('additionalInfo1');
+            const info2 = document.getElementById('additionalInfo2');
+            
+            if (item.type === 'physical') {
+                info1.innerHTML = `<strong>Kích thước:</strong> ${item.dimensions || 'N/A'}`;
+                info2.innerHTML = `<strong>Bảo hành:</strong> ${item.warranty || 'N/A'}`;
+            } else if (item.type === 'voucher' || item.type === 'coupon') {
+                info1.innerHTML = `<strong>Hiệu lực:</strong> ${item.validityDays} ngày`;
+                info2.innerHTML = `<strong>Giá trị tối thiểu:</strong> ${item.minOrderValue ? item.minOrderValue.toLocaleString() + 'đ' : 'Không'}`;
+            }
+            
+            // Update image placeholder
+            const imageDiv = document.getElementById('itemImage');
+            imageDiv.innerHTML = `<div style="text-align: center;">
+                <div style="font-size: 48px; color: #3498db; margin-bottom: 10px;">
+                    ${item.type === 'physical' ? '🎁' : item.type === 'voucher' ? '🎫' : '🎟️'}
+                </div>
+                <div style="font-size: 11px; color: #6c757d;">${item.image}</div>
+            </div>`;
+            
+            // Populate form with basic info
+            document.getElementById('rewardCode').value = item.code;
+            document.getElementById('rewardName').value = item.name;
+            document.getElementById('rewardType').value = getItemTypeDisplay(item.type);
+            document.getElementById('erpStock').value = item.stock;
+            document.getElementById('allocatedQty').max = item.stock;
+            document.getElementById('programQty').max = item.stock;
+            
+            // Auto-suggest redemption points based on cost
+            const suggestedPoints = Math.round(item.cost / 1000) * 10;
+            document.getElementById('redeemPoints').placeholder = `Gợi ý: ${suggestedPoints} điểm`;
+        }
+
+        // Get display name for item type
+        function getItemTypeDisplay(type) {
+            const typeMap = {
+                'physical': 'Vật lý',
+                'voucher': 'Voucher',
+                'coupon': 'Coupon'
+            };
+            return typeMap[type] || type;
+        }
+
+        // Search items
+        function searchItems(term) {
+            const filtered = erpItems.filter(item => 
+                item.code.toLowerCase().includes(term.toLowerCase()) ||
+                item.name.toLowerCase().includes(term.toLowerCase())
+            );
+            
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            
+            filtered.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-option';
+                itemDiv.onclick = () => selectItem(item);
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-code">${item.code}</div>
+                        <div class="item-name">${item.name}</div>
+                    </div>
+                    <div class="item-stock">Tồn: ${item.stock.toLocaleString()}</div>
+                `;
+                itemList.appendChild(itemDiv);
+            });
+        }
+
+        // Filter item type
+        function filterItemType(type) {
+            const filtered = type ? erpItems.filter(item => item.type === type) : erpItems;
+            
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            
+            filtered.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-option';
+                itemDiv.onclick = () => selectItem(item);
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-code">${item.code}</div>
+                        <div class="item-name">${item.name}</div>
+                    </div>
+                    <div class="item-stock">Tồn: ${item.stock.toLocaleString()}</div>
+                `;
+                itemList.appendChild(itemDiv);
+            });
+        }
+
+        // Validate allocation quantity
+        function validateAllocation() {
+            const allocatedQty = document.getElementById('allocatedQty');
+            const erpStock = document.getElementById('erpStock').value;
+            
+            if (parseInt(allocatedQty.value) > parseInt(erpStock)) {
+                alert('Số lượng cho phép đổi không được vượt quá tồn kho!');
+                allocatedQty.value = erpStock;
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('rewardCode').value = '';
+            document.getElementById('rewardName').value = '';
+            document.getElementById('rewardType').value = '';
+            document.getElementById('erpStock').value = '';
+            document.getElementById('redeemPoints').value = '';
+            document.getElementById('allocatedQty').value = '';
+            document.getElementById('programQty').value = '';
+            document.getElementById('programNote').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('autoReplenish').checked = false;
+            document.getElementById('selectedItemDetails').style.display = 'none';
+            document.getElementById('itemSelectSection').style.display = 'block';
+            
+            // Reset gift type to redemption
+            document.querySelector('input[name="giftType"][value="redemption"]').checked = true;
+            toggleGiftType('redemption');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('rewardModal').classList.remove('active');
+            clearForm();
+        }
+
+        // Save reward
+        function saveReward() {
+            if (!selectedItem && !editingReward) {
+                alert('Vui lòng chọn một phần quà từ danh sách ERP!');
+                return;
+            }
+            
+            if (currentGiftType === 'redemption') {
+                const redeemPoints = document.getElementById('redeemPoints').value;
+                const allocatedQty = document.getElementById('allocatedQty').value;
+                
+                if (!redeemPoints || !allocatedQty) {
+                    alert('Vui lòng điền đầy đủ thông tin bắt buộc (Điểm quy đổi và Số lượng cho phép đổi)!');
+                    return;
+                }
+                
+                alert(`Quà quy đổi "${selectedItem ? selectedItem.name : editingReward['Tên quà']}" đã được lưu thành công!\n` +
+                      `- Điểm quy đổi: ${redeemPoints} điểm\n` + 
+                      `- Số lượng cho phép đổi: ${allocatedQty}`);
+            } else {
+                const programQty = document.getElementById('programQty').value;
+                const programNote = document.getElementById('programNote').value;
+                
+                if (!programQty) {
+                    alert('Vui lòng nhập số lượng quà chương trình!');
+                    return;
+                }
+                
+                alert(`Quà chương trình "${selectedItem ? selectedItem.name : editingReward['Tên quà']}" đã được lưu thành công!\n` +
+                      `- Số lượng: ${programQty}\n` +
+                      `- Ghi chú: ${programNote || 'Không có'}`);
+            }
+            
+            closeModal();
+        }
+
+        // View reward details
+        function viewReward(code) {
+            const reward = rewardsData.find(r => r['Mã quà'] === code);
+            if (!reward) return;
+            
+            document.getElementById('detailModalTitle').textContent = reward['Tên quà'];
+            
+            const isRedemption = reward['Phân loại'] === 'Quà quy đổi';
+            
+            document.getElementById('detailModalBody').innerHTML = `
+                <div class="form-section">
+                    <h3 class="form-section-title">📋 Thông tin cơ bản</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div><strong>Mã phần quà:</strong> ${reward['Mã quà']}</div>
+                        <div><strong>Loại:</strong> ${getTypeBadge(reward['Loại'])}</div>
+                        <div><strong>Phân loại:</strong> ${getCategoryBadge(reward['Phân loại'])}</div>
+                        <div><strong>Trạng thái:</strong> ${getStatusPill(reward['Trạng thái'])}</div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">📊 Thông tin tồn kho</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <div style="font-size: 12px; color: #6c757d;">Tồn kho ERP</div>
+                            <div style="font-size: 24px; font-weight: bold;">${reward['Tồn kho (ERP)'].toLocaleString()}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #6c757d;">SL cho phép đổi</div>
+                            <div style="font-size: 24px; font-weight: bold;">${reward['Số lượng cho phép đổi'].toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 12px; color: #6c757d; margin-bottom: 5px;">Tỷ lệ sử dụng</div>
+                        <div class="progress-bar-container" style="width: 100%; height: 20px;">
+                            <div class="progress-bar" style="width: 65%; height: 100%;"></div>
+                        </div>
+                        <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">325 / 500 (65%)</div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">${isRedemption ? '🎯 Cấu hình đổi thưởng' : '🎁 Cấu hình quà tặng'}</h3>
+                    <div style="display: grid; gap: 15px;">
+                        ${isRedemption ? 
+                            `<div><strong>Điểm quy đổi:</strong> <span class="points-badge">${reward['Điểm quy đổi'].toLocaleString()} điểm</span></div>` :
+                            `<div><strong>Loại quà:</strong> Quà tặng chương trình</div>`
+                        }
+                        <div><strong>Ngày hết hạn:</strong> ${reward['Ngày hết hạn']}</div>
+                        <div><strong>Giới hạn/người:</strong> ${isRedemption ? 'Không giới hạn' : '1 quà/người'}</div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">📈 Thống kê sử dụng</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #3498db;">1,234</div>
+                            <div style="font-size: 12px; color: #6c757d;">Lượt ${isRedemption ? 'đổi' : 'tặng'}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #27ae60;">${isRedemption ? '617K' : '0'}</div>
+                            <div style="font-size: 12px; color: #6c757d;">${isRedemption ? 'Điểm đã dùng' : 'Điểm tặng'}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #f39c12;">4.8</div>
+                            <div style="font-size: 12px; color: #6c757d;">Đánh giá TB</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section" style="border-top: 1px solid #e9ecef; padding-top: 20px;">
+                    <div class="action-buttons" style="justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeDetailModal()">Đóng</button>
+                        <button class="btn btn-primary" onclick="editReward('${reward['Mã quà']}')">Chỉnh sửa</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        // Close detail modal
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Edit reward
+        function editReward(code) {
+            const reward = rewardsData.find(r => r['Mã quà'] === code);
+            if (!reward) return;
+            
+            editingReward = reward;
+            document.getElementById('modalTitle').textContent = 'Chỉnh sửa phần thưởng';
+            
+            // Set gift type based on category
+            const isRedemption = reward['Phân loại'] === 'Quà quy đổi';
+            document.querySelector(`input[name="giftType"][value="${isRedemption ? 'redemption' : 'program'}"]`).checked = true;
+            toggleGiftType(isRedemption ? 'redemption' : 'program');
+            
+            // Populate form with reward data
+            document.getElementById('rewardCode').value = reward['Mã quà'];
+            document.getElementById('rewardName').value = reward['Tên quà'];
+            document.getElementById('rewardType').value = reward['Loại'];
+            document.getElementById('erpStock').value = reward['Tồn kho (ERP)'];
+            
+            if (isRedemption) {
+                document.getElementById('redeemPoints').value = reward['Điểm quy đổi'];
+                document.getElementById('allocatedQty').value = reward['Số lượng cho phép đổi'];
+            } else {
+                document.getElementById('programQty').value = reward['Số lượng cho phép đổi'];
+                document.getElementById('programNote').value = 'Quà tặng chương trình';
+            }
+            
+            // Hide item selection for edit mode
+            document.getElementById('itemSelectSection').style.display = 'none';
+            
+            closeDetailModal();
+            document.getElementById('rewardModal').classList.add('active');
+        }
+
+        // Pause reward
+        function pauseReward(code) {
+            if (confirm('Bạn có chắc muốn tạm dừng phần thưởng này?')) {
+                const reward = rewardsData.find(r => r['Mã quà'] === code);
+                if (reward) {
+                    reward['Trạng thái'] = 'Inactive';
+                    loadRewards();
+                    alert('Phần thưởng đã được tạm dừng!');
+                }
+            }
+        }
+
+        // Delete reward
+        function deleteReward(code) {
+            if (confirm('Bạn có chắc muốn xóa phần thưởng này?')) {
+                const index = rewardsData.findIndex(r => r['Mã quà'] === code);
+                if (index > -1) {
+                    rewardsData.splice(index, 1);
+                    filteredRewards = [...rewardsData];
+                    loadRewards();
+                    updateStats();
+                    updateTabCounts();
+                    alert('Phần thưởng đã được xóa!');
+                }
+            }
+        }
+
+        // Export rewards
+        function exportRewards() {
+            alert('Xuất file CSV danh sách phần thưởng');
+        }
+
+        // Import rewards
+        function importRewards() {
+            alert('Nhập file CSV danh sách phần thưởng');
+        }
+
+        // Sync with ERP
+        function syncERP() {
+            if (confirm('Đồng bộ dữ liệu tồn kho với ERP?')) {
+                alert('Đang đồng bộ dữ liệu...\nĐã cập nhật ' + rewardsData.length + ' phần thưởng');
+            }
+        }
+    </script>
+</body>
+</html>
