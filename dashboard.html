@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Vietravel Loyalty</title>
+    <title>Dashboard - KiNam Loyalty</title>
     <style>
         * {
             margin: 0;
@@ -174,7 +174,7 @@
             height: 5px;
         }
 
-        .tier-vietravel::before { background: #95a5a6; }
+        .tier-KiNamTravel::before { background: #95a5a6; }
         .tier-silver::before { background: #c0c0c0; }
         .tier-gold::before { background: #ffd700; }
         .tier-platinum::before { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
@@ -563,7 +563,7 @@
             display: inline-block;
         }
 
-        .badge-vietravel { background: #95a5a6; color: white; }
+        .badge-KiNamTravel { background: #95a5a6; color: white; }
         .badge-silver { background: #c0c0c0; color: #333; }
         .badge-gold { background: #ffd700; color: #333; }
         .badge-platinum { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
@@ -759,7 +759,7 @@
                 <div class="suggestion-card">
                     <div class="suggestion-title">🎯 Tối ưu hóa tỷ lệ chuyển đổi</div>
                     <div class="suggestion-desc">
-                        Nhóm hội viên Vietravel có tỷ lệ chuyển đổi thấp (12%). Đề xuất giảm ngưỡng điểm lên Bạc từ 200 xuống 150 điểm.
+                        Nhóm hội viên KiNamTravel có tỷ lệ chuyển đổi thấp (12%). Đề xuất giảm ngưỡng điểm lên Bạc từ 200 xuống 150 điểm.
                     </div>
                     <div class="suggestion-action">→ Xem chi tiết phân tích</div>
                 </div>
@@ -832,7 +832,7 @@
                 channels: { App: 45, Web: 35, POS: 20 }
             },
             tiers: {
-                vietravel: {
+                KiNamTravel: {
                     count: 5846,
                     percentage: 46.9,
                     conditions: ['0 - 199 điểm Vàng', 'Hoặc dưới 3 tour/năm'],
@@ -860,10 +860,10 @@
             tierHistory: [
                 {time: '15/12/2024 00:05', member: 'Nguyễn Văn An', oldTier: 'Bạc', newTier: 'Vàng', reason: 'Đạt 700 điểm', points: 725, change: 'up'},
                 {time: '15/12/2024 00:04', member: 'Trần Thị Bình', oldTier: 'Vàng', newTier: 'Bạch kim', reason: 'Đạt 2000 điểm', points: 2150, change: 'up'},
-                {time: '15/12/2024 00:03', member: 'Lê Văn Cường', oldTier: 'Vietravel', newTier: 'Bạc', reason: 'Đạt 200 điểm', points: 215, change: 'up'},
+                {time: '15/12/2024 00:03', member: 'Lê Văn Cường', oldTier: 'KiNamTravel', newTier: 'Bạc', reason: 'Đạt 200 điểm', points: 215, change: 'up'},
                 {time: '15/12/2024 00:02', member: 'Phạm Thị Dung', oldTier: 'Vàng', newTier: 'Bạc', reason: 'Không đủ điểm duy trì', points: 450, change: 'down'},
                 {time: '14/12/2024 23:58', member: 'Hoàng Minh Tú', oldTier: 'Bạc', newTier: 'Vàng', reason: 'Đạt 700 điểm', points: 712, change: 'up'},
-                {time: '14/12/2024 23:45', member: 'Vũ Thu Hà', oldTier: 'Vietravel', newTier: 'Bạc', reason: 'Đạt 200 điểm', points: 203, change: 'up'},
+                {time: '14/12/2024 23:45', member: 'Vũ Thu Hà', oldTier: 'KiNamTravel', newTier: 'Bạc', reason: 'Đạt 200 điểm', points: 203, change: 'up'},
                 {time: '14/12/2024 22:30', member: 'Đỗ Văn Nam', oldTier: 'Bạc', newTier: 'Vàng', reason: 'Đạt 7 tour/năm', points: 680, change: 'up'},
                 {time: '14/12/2024 21:15', member: 'Cao Thị Lan', oldTier: 'Vàng', newTier: 'Bạch kim', reason: 'Đạt 1500 điểm', points: 1523, change: 'up'}
             ],
@@ -1026,29 +1026,29 @@
                 <div class="tab-content">
                     <!-- Tier Cards -->
                     <div class="tier-cards">
-                        <!-- Vietravel Card -->
-                        <div class="tier-card tier-vietravel">
+                        <!-- KiNamTravel Card -->
+                        <div class="tier-card tier-KiNamTravel">
                             <div class="tier-header">
                                 <div class="tier-info">
                                     <div class="tier-icon" style="background: #95a5a6;">🎫</div>
-                                    <div class="tier-name">Vietravel</div>
+                                    <div class="tier-name">KiNamTravel</div>
                                 </div>
                                 
                             </div>
                             <div class="tier-stats">
-                                <div class="tier-member-count">${tierData.vietravel.count.toLocaleString()}</div>
-                                <div class="tier-percentage">${tierData.vietravel.percentage}% tổng hội viên</div>
+                                <div class="tier-member-count">${tierData.KiNamTravel.count.toLocaleString()}</div>
+                                <div class="tier-percentage">${tierData.KiNamTravel.percentage}% tổng hội viên</div>
                             </div>
                             <div class="tier-section">
                                 <div class="tier-section-title">Điều kiện đạt hạng</div>
                                 <ul class="tier-list">
-                                    ${tierData.vietravel.conditions.map(c => `<li>${c}</li>`).join('')}
+                                    ${tierData.KiNamTravel.conditions.map(c => `<li>${c}</li>`).join('')}
                                 </ul>
                             </div>
                             <div class="tier-section">
                                 <div class="tier-section-title">Quyền lợi áp dụng</div>
                                 <ul class="tier-list">
-                                    ${tierData.vietravel.benefits.map(b => `<li>${b}</li>`).join('')}
+                                    ${tierData.KiNamTravel.benefits.map(b => `<li>${b}</li>`).join('')}
                                 </ul>
                             </div>
                         </div>
@@ -1568,4 +1568,5 @@
         });
     </script>
 </body>
+
 </html>
